@@ -1,4 +1,4 @@
-﻿namespace Core;
+﻿namespace Forge.DirectoryMapper.Core;
 public sealed class DirectoryMap
 {
     public DirectoryMap? Parent { get; init; }

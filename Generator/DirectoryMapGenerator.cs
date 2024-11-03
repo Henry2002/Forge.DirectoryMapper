@@ -36,9 +36,31 @@ namespace Generator
             context.RegisterSourceOutput(directoriesToMap,
                 static (spc, source) => spc.AddSource(
                     $"{source.Symbol.Name}.g.cs",
-                    source.GetSourceText(new StringBuilder()).ToString()));
+                    Execute(source)));
         }
 
+        static string Execute(ClassVisitor visitor)
+        {
+            var classBuilder = new StringBuilder();
+
+            visitor.AddSourceText(classBuilder);
+
+            var classText = classBuilder.ToString();
+
+
+            return $$"""
+                using Forge.DirectoryMapper.Core;
+
+                namespace {{visitor.Symbol.ContainingNamespace}}
+                {
+
+
+                    {{classText}}
+
+                }
+
+                """;
+        }
 
         static bool IsSyntaxTargetForGeneration(SyntaxNode node)
         {
@@ -92,6 +114,11 @@ namespace Generator
 
             var dfsStack = new Stack<INamedTypeSymbol>();
 
+            foreach (var node in classSymbol.GetMembers().Where(member => member is INamedTypeSymbol))
+            {
+                dfsStack.Push((INamedTypeSymbol)node);
+            }
+
             while (dfsStack.Count > 0)
             {
                 var toEvaluate = dfsStack.Pop();
@@ -112,17 +139,20 @@ namespace Generator
 
                 if (leaf is null) break;
 
-                leaf.Children.Add(new ClassVisitor
+                var newLeaf = new ClassVisitor
                 {
                     Parent = leaf,
                     Symbol = toEvaluate,
-                });
+                };
 
+                leaf.Children.Add(newLeaf);
 
                 foreach (var node in toEvaluate.GetMembers().Where(member => member is INamedTypeSymbol))
                 {
                     dfsStack.Push((INamedTypeSymbol)node);
                 }
+
+                leaf = newLeaf;
 
             }
 

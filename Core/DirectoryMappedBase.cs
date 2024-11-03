@@ -3,12 +3,12 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Text;
 
-namespace Core;
+namespace Forge.DirectoryMapper.Core;
 
 
 public abstract class DirectoryMappedBase
 {
-    private protected readonly static string _basePath = string.Empty;
+    protected readonly static string _basePath = string.Empty;
     public static void AppendAllLines(string name, IEnumerable<string> contents)
     {
         File.AppendAllLines(Combined(name), contents);
@@ -162,7 +162,7 @@ public abstract class DirectoryMappedBase
 
     public static void Move(string name, string path)
     {
-        File.Move(Combined(name), path); 
+        File.Move(Combined(name), path);
     }
 
     public static void Move(string name, string path, bool overwrite)
@@ -182,7 +182,7 @@ public abstract class DirectoryMappedBase
 
     public static FileStream Open(string name, FileMode mode, FileAccess access, FileShare share)
     {
-        return File.Open(Combined(name),mode, access, share);   
+        return File.Open(Combined(name), mode, access, share);
     }
 
     public static FileStream Open(string path, FileStreamOptions options)
@@ -193,7 +193,7 @@ public abstract class DirectoryMappedBase
     public static SafeFileHandle OpenHandle(string path, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read,
             FileShare share = FileShare.Read, FileOptions options = FileOptions.None, long preallocationSize = 0)
     {
-        return File.OpenHandle(Combined(path), mode, access, share, options,  preallocationSize);
+        return File.OpenHandle(Combined(path), mode, access, share, options, preallocationSize);
     }
 
     public static FileStream OpenRead(string name)
@@ -203,12 +203,12 @@ public abstract class DirectoryMappedBase
 
     public static StreamReader OpenText(string name)
     {
-        return File.OpenText(Combined(name));   
+        return File.OpenText(Combined(name));
     }
 
     public static FileStream OpenWrite(string name)
     {
-        return File.OpenWrite(Combined(name));  
+        return File.OpenWrite(Combined(name));
     }
 
     public static byte[] ReadAllBytes(string name)
@@ -218,23 +218,23 @@ public abstract class DirectoryMappedBase
 
     public static async Task<byte[]> ReadAllBytesAsync(string name, CancellationToken cancellationToken = default)
     {
-        return await File.ReadAllBytesAsync(Combined(name), cancellationToken);  
+        return await File.ReadAllBytesAsync(Combined(name), cancellationToken);
     }
 
-    public static IEnumerable<string> ReadAllLines(string name) 
+    public static IEnumerable<string> ReadAllLines(string name)
     {
-        return File.ReadAllLines(Combined(name));  
+        return File.ReadAllLines(Combined(name));
     }
 
     public static IEnumerable<string> ReadAllLines(string path, Encoding encoding)
     {
-       
-        return File.ReadAllLines(Combined(path), encoding);   
+
+        return File.ReadAllLines(Combined(path), encoding);
     }
 
     public static async Task<IEnumerable<string>> ReadAllLinesAsync(string name, CancellationToken cancellationToken = default)
     {
-        return await File.ReadAllLinesAsync(Combined(name), cancellationToken);  
+        return await File.ReadAllLinesAsync(Combined(name), cancellationToken);
     }
 
     public static IEnumerable<string> ReadLines(string name)
@@ -256,17 +256,17 @@ public abstract class DirectoryMappedBase
     {
         return File.ReadAllText(Combined(name));
     }
-    
+
     public static async Task<string> ReadAllTextAsync(string name, CancellationToken cancellationToken = default)
     {
-        return await File.ReadAllTextAsync(Combined(name), cancellationToken);    
+        return await File.ReadAllTextAsync(Combined(name), cancellationToken);
     }
 
     public static void Replace(string sourceFileName, string destinationFileName, string? destinationFileBackupName)
     {
         File.Replace(Combined(sourceFileName), Combined(destinationFileName), CombinedNullable(destinationFileBackupName));
     }
-  
+
     public static FileSystemInfo? ResolveLinkTarget(string linkPath, bool returnFinalTarget)
     {
         return File.ResolveLinkTarget(Combined(linkPath), returnFinalTarget);
@@ -320,7 +320,7 @@ public abstract class DirectoryMappedBase
 
     public static async Task WriteAllBytesAsync(string name, byte[] bytes)
     {
-        
+
         await File.WriteAllBytesAsync(Combined(name), bytes);
     }
 

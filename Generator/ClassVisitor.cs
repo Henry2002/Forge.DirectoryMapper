@@ -12,16 +12,23 @@ namespace Generator
 
         public INamedTypeSymbol Symbol { get; set; } 
 
-        public StringBuilder GetSourceText(StringBuilder sb)
+        public StringBuilder AddSourceText(StringBuilder sb)
         {
-            sb.Append($"public partial class {Symbol.Name} : DirectoryMapped {{");
+            sb.AppendLine($"public partial class {Symbol.Name} : DirectoryMappedBase {{");
+
+
+            sb.AppendLine($"static {Symbol.Name}() " +
+                "{" +
+                
+                "}"
+                );
 
             foreach(var child in Children)
             {
-                sb.Append(child.GetSourceText(sb));
+                child.AddSourceText(sb);
             }
 
-            sb.Append('}');
+            sb.AppendLine("}");
 
             return sb;
         }
